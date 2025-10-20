@@ -14,12 +14,15 @@ import java.util.List;
 
 /**
  * DAO implementation for managing cart-related operations.
- * Handles operations like creating a cart, adding/removing items, checking stock, etc.
+ * Handles operations like creating a cart, adding/removing items, checking
+ * stock, etc.
  */
 public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
-     * Retrieves the active cart for a user, or creates a new one if no active cart exists.
+     * Retrieves the active cart for a user, or creates a new one if no active cart
+     * exists.
+     * 
      * @param userId the user ID.
      * @return the cart ID.
      */
@@ -34,13 +37,14 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Fetches the active cart for a user.
+     * 
      * @param userId the user ID.
      * @return the cart ID if found, -1 if not found.
      */
     private int getActiveCart(int userId) {
         String sql = "SELECT cart_id FROM cart WHERE user_id = ? AND status = 'active'";
         try (Connection conn = Database.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -54,13 +58,14 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Creates a new active cart for the given user.
+     * 
      * @param userId the user ID.
      * @return the newly created cart ID.
      */
     private int createNewCart(int userId) {
         String sql = "INSERT INTO cart (user_id, status) VALUES (?, 'active')";
         try (Connection conn = Database.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, userId);
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
@@ -75,29 +80,24 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Retrieves all items in a cart.
+     * 
      * @param cartId the cart ID.
      * @return a list of CartItem objects.
      */
     @Override
     public List<CartItem> getCartItems(int cartId) {
         List<CartItem> cartItems = new ArrayList<>();
-        String sql = "SELECT ci.cart_item_id, b.id AS book_id, b.title, b.author, ci.quantity, b.price " +
+        String sql = "SELECT ci.book_id, ci.quantity " +
                 "FROM cart_items ci " +
-                "JOIN books b ON ci.book_id = b.id " +
                 "WHERE ci.cart_id = ?";
         try (Connection conn = Database.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, cartId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 CartItem item = new CartItem(
-                        rs.getInt("cart_item_id"),
                         rs.getInt("book_id"),
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getInt("quantity"),
-                        rs.getDouble("price")
-                );
+                        rs.getInt("quantity"));
                 cartItems.add(item);
             }
         } catch (SQLException e) {
@@ -108,6 +108,7 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Removes a book from the cart.
+     * 
      * @param cartId the cart ID.
      * @param bookId the book ID to remove.
      */
@@ -119,8 +120,9 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Updates the quantity of a book in the cart.
-     * @param cartId the cart ID.
-     * @param bookId the book ID.
+     * 
+     * @param cartId   the cart ID.
+     * @param bookId   the book ID.
      * @param quantity the new quantity.
      */
     @Override
@@ -131,8 +133,9 @@ public class CartDAO extends BaseDAO implements ICartDAO {
 
     /**
      * Adds or updates a book in the cart.
-     * @param cartId the cart ID.
-     * @param bookId the book ID.
+     * 
+     * @param cartId   the cart ID.
+     * @param bookId   the book ID.
      * @param quantity the quantity to add or update.
      */
     @Override
@@ -144,13 +147,13 @@ public class CartDAO extends BaseDAO implements ICartDAO {
     /**
      * Removes selected books from the cart.
      *
-     * @param cartId       The ID of the cart.
+     * @param cartId        The ID of the cart.
      * @param booksToRemove The list of books to remove from the cart.
      */
     public void removeBooksFromCart(int cartId, List<Book> booksToRemove) {
         String sql = "DELETE FROM cart_items WHERE cart_id = ? AND book_id = ?";
         try (Connection conn = Database.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
             for (Book book : booksToRemove) {
                 pstmt.setInt(1, cartId);
                 pstmt.setInt(2, book.getBookId());
