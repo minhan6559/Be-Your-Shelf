@@ -1,8 +1,11 @@
 #!/bin/sh
-
-# Use project-local JDK
-JAVA_HOME="$(cd "$(dirname "$0")" && pwd)/jdk-22"
-export JAVA_HOME
+# Use project-local JDK if it exists, else use system JDK
+if [ -d "$(cd "$(dirname "$0")" && pwd)/jdk" ]; then
+    JAVA_HOME="$(cd "$(dirname "$0")" && pwd)/jdk"
+    export JAVA_HOME
+else
+    echo "Using system JDK - no local jdk found"
+fi
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file

@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set JDK_DIR=jdk-22
+set JDK_DIR=jdk
 set JDK_URL=https://download.java.net/openjdk/jdk22/ri/openjdk-22+36_windows-x64_bin.zip
 
 if exist %JDK_DIR%\ (
@@ -18,6 +18,9 @@ if %ERRORLEVEL% neq 0 (
 
 echo Extracting...
 tar -xf jdk.zip
+for /d %%i in (jdk-*) do (
+    ren "%%i" "%JDK_DIR%"
+)
 del jdk.zip
 
 echo JDK installed locally in %JDK_DIR%
