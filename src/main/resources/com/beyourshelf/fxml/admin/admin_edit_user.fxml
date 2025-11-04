@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" spacing="30" style="-fx-padding: 40; -fx-background-color: #f4e1c1; -fx-alignment: CENTER;" fx:controller="com.beyourshelf.controller.admin.AdminEditUserController">
+
+	<!-- Title -->
+	<Label text="Edit User Profile" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #8b4513;" />
+
+	<!-- Form fields for editing user -->
+	<VBox spacing="15" style="-fx-alignment: CENTER_LEFT;">
+		<Label text="Username" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+		<TextField fx:id="usernameField" style="
+            -fx-font-size: 16px;
+            -fx-pref-width: 300;
+            -fx-padding: 10 20;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: #d2691e;
+            -fx-border-width: 2px;
+            -fx-background-color: #ffffff;
+        "/>
+
+		<Label text="First Name" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+		<TextField fx:id="firstNameField" style="
+            -fx-font-size: 16px;
+            -fx-pref-width: 300;
+            -fx-padding: 10 20;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: #d2691e;
+            -fx-border-width: 2px;
+            -fx-background-color: #ffffff;
+        "/>
+
+		<Label text="Last Name" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+		<TextField fx:id="lastNameField" style="
+            -fx-font-size: 16px;
+            -fx-pref-width: 300;
+            -fx-padding: 10 20;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: #d2691e;
+            -fx-border-width: 2px;
+            -fx-background-color: #ffffff;
+        "/>
+
+		<Label text="Password" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+		<PasswordField fx:id="passwordField" style="
+            -fx-font-size: 16px;
+            -fx-pref-width: 300;
+            -fx-padding: 10 20;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: #d2691e;
+            -fx-border-width: 2px;
+            -fx-background-color: #ffffff;
+        "/>
+
+		<Label text="Confirm Password" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+		<PasswordField fx:id="confirmPasswordField" style="
+            -fx-font-size: 16px;
+            -fx-pref-width: 300;
+            -fx-padding: 10 20;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: #d2691e;
+            -fx-border-width: 2px;
+            -fx-background-color: #ffffff;
+        "/>
+	</VBox>
+
+	<!-- Buttons for Save and Cancel -->
+	<HBox spacing="15" style="-fx-alignment: CENTER;">
+		<Button text="Save" onAction="#handleSaveUser"
+				style="
+            -fx-background-color: #228b22;
+            -fx-text-fill: white;
+            -fx-font-size: 16px;
+            -fx-padding: 10 25;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: transparent;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.3, 0, 2);
+        "/>
+		<Button text="Cancel" onAction="#handleCancel"
+				style="
+            -fx-background-color: #d2691e;
+            -fx-text-fill: white;
+            -fx-font-size: 16px;
+            -fx-padding: 10 25;
+            -fx-background-radius: 20;
+            -fx-border-radius: 20;
+            -fx-border-color: transparent;
+            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.3, 0, 2);
+        "/>
+	</HBox>
+
+	<!-- Feedback label -->
+	<Label fx:id="feedbackLabel" style="-fx-text-fill: red;" />
+
+</VBox>
