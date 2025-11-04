@@ -1,0 +1,32 @@
+@echo off
+setlocal
+
+set JDK_DIR=jdk
+set JDK_URL=https://download.java.net/openjdk/jdk22/ri/openjdk-22+36_windows-x64_bin.zip
+
+@REM If not have jdk directory, download it
+if not exist %JDK_DIR% (
+    echo Downloading JDK...
+    curl -L -o jdk.zip %JDK_URL%
+    if %ERRORLEVEL% neq 0 (
+        echo Download failed. Check your internet connection or URL.
+        exit /b 1
+    )
+
+    echo Extracting...
+    tar -xf jdk.zip
+    for /d %%i in (jdk-*) do (
+        ren "%%i" "%JDK_DIR%"
+    )
+    del jdk.zip
+
+    echo JDK installed locally in %JDK_DIR%
+)
+
+echo "Running application..."
+set "SCRIPT_DIR=%~dp0"
+set "LOCAL_JDK=%SCRIPT_DIR%jdk"
+set JAVA_HOME=%LOCAL_JDK%
+echo Using project-local JDK at %JAVA_HOME%
+call mvnw.cmd clean compile javafx:run
+endlocal

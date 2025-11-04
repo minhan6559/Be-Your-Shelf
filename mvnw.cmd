@@ -40,14 +40,6 @@ title %0
 @REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
 @if "%MAVEN_BATCH_ECHO%" == "on"  echo %MAVEN_BATCH_ECHO%
 
-@REM Use project-local JDK if it exists, else use system JDK
-if exist "%~dp0jdk\" (
-    set JAVA_HOME=%~dp0jdk
-    echo Using project-local JDK at %JAVA_HOME%
-) else (
-    echo Using system JDK - no local jdk found
-)
-
 @REM set %HOME% to equivalent of $HOME
 if "%HOME%" == "" (set "HOME=%HOMEDRIVE%%HOMEPATH%")
 
