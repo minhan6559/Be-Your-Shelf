@@ -73,7 +73,22 @@ public class BookDAO extends BaseDAO implements IBookDAO {
      */
     @Override
     public boolean reducePhysicalCopies(int bookId, int quantity) {
-        return updateBookField(bookId, -quantity, "physical_copies");
+        // Conditional reduce to prevent negative stock; returns false if not enough
+        // stock
+        String query = "UPDATE books SET physical_copies = physical_copies - ? WHERE id = ? AND physical_copies >= ?";
+        return executeUpdate(query, quantity, bookId, quantity);
+    }
+
+    /**
+     * Increase the stock of a book by a given quantity.
+     *
+     * @param bookId   the ID of the book.
+     * @param quantity the quantity to increase.
+     * @return true if the operation was successful, false otherwise.
+     */
+    @Override
+    public boolean increasePhysicalCopies(int bookId, int quantity) {
+        return updateBookField(bookId, quantity, "physical_copies");
     }
 
     /**

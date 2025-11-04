@@ -54,6 +54,7 @@ public class PaymentController {
     private final IPaymentService paymentService = ServiceManager.getInstance().getPaymentService();
 
     private ShoppingCartController shoppingCartController; // Controller responsible for managing the shopping cart UI
+    private boolean paymentCompleted = false; // Track whether payment finished successfully
 
     /**
      * Sets the payment details and displays the total amount.
@@ -70,6 +71,7 @@ public class PaymentController {
         this.shoppingCart = shoppingCart;
         this.shoppingCartController = shoppingCartController;
         updateTotalAmountLabel(); // Update the displayed total amount
+        setupCloseHandler(); // Ensure reservations are reverted on cancel/close
     }
 
     /**
@@ -97,6 +99,7 @@ public class PaymentController {
                                                                                                                         // user
                                                                                                                         // of
                                                                                                                         // success
+            paymentCompleted = true;
             shoppingCartController.finalizeStockAfterPayment(); // Finalize stock changes after payment
             closePaymentScreen(); // Close the payment screen
         } catch (SQLException e) {
@@ -197,5 +200,26 @@ public class PaymentController {
     private void closePaymentScreen() {
         Stage stage = (Stage) totalAmountLabel.getScene().getWindow(); // Get the current window
         stage.close(); // Close the window
+    }
+
+    /**
+     * Ensure that if the user closes the payment window (cancel), we revert any
+     * previously reserved stock.
+     */
+    private void setupCloseHandler() {
+        // Wait until the control is attached to a scene/window
+        totalAmountLabel.sceneProperty().addListener((obsScene, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obsWin, oldWin, newWin) -> {
+                    if (newWin instanceof Stage stage) {
+                        stage.setOnCloseRequest(event -> {
+                            if (!paymentCompleted) {
+                                shoppingCartController.revertReservedStock();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 }

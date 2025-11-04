@@ -52,6 +52,15 @@ public interface IBookDAO {
     boolean reducePhysicalCopies(int bookId, int quantity);
 
     /**
+     * Increase the physical stock of a book by a given quantity.
+     *
+     * @param bookId   the ID of the book.
+     * @param quantity the quantity to increase.
+     * @return true if the operation was successful, false otherwise.
+     */
+    boolean increasePhysicalCopies(int bookId, int quantity);
+
+    /**
      * Update the number of sold copies for a given book.
      * 
      * @param bookId   the ID of the book.

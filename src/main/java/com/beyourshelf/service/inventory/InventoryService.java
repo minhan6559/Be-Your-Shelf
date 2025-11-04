@@ -30,15 +30,22 @@ public class InventoryService implements IInventoryService {
      * @return true if all books have enough stock, false otherwise.
      */
     public boolean reserveBooks(Map<Book, Integer> books) {
+        // Attempt conditional reductions per item; roll back if any fail.
+        java.util.List<Map.Entry<Book, Integer>> reduced = new java.util.ArrayList<>();
         for (Map.Entry<Book, Integer> entry : books.entrySet()) {
-            int availableCopies = bookDAO.getAvailableCopies(entry.getKey()); // Check stock availability
-            if (availableCopies < entry.getValue()) {
-                return false; // Not enough stock for at least one book
+            int bookId = entry.getKey().getBookId();
+            int quantity = entry.getValue();
+            boolean ok = bookDAO.reducePhysicalCopies(bookId, quantity);
+            if (!ok) {
+                // Roll back any previously reduced items
+                for (Map.Entry<Book, Integer> prev : reduced) {
+                    bookDAO.increasePhysicalCopies(prev.getKey().getBookId(), prev.getValue());
+                }
+                return false;
             }
-            // Reserve the stock by reducing physical copies
-            bookDAO.reducePhysicalCopies(entry.getKey().getBookId(), entry.getValue());
+            reduced.add(entry);
         }
-        return true; // All books reserved successfully
+        return true;
     }
 
     /**
@@ -49,8 +56,8 @@ public class InventoryService implements IInventoryService {
      */
     public void revertReservations(List<CartItem> cartItems) {
         for (CartItem item : cartItems) {
-            // Restore physical copies based on cart item quantity
-            bookDAO.updatePhysicalCopies(item.getBookId(), item.getQuantity());
+            // Add back physical copies based on cart item quantity
+            bookDAO.increasePhysicalCopies(item.getBookId(), item.getQuantity());
         }
     }
 
@@ -61,17 +68,11 @@ public class InventoryService implements IInventoryService {
      * @param books Map of Book to quantity sold.
      */
     public void finalizeStockAdjustments(Map<Book, Integer> books) {
+        // Physical copies should already be reserved; only update sold copies here.
         for (Map.Entry<Book, Integer> entry : books.entrySet()) {
-            int bookId = entry.getKey().getBookId(); // Get book ID
-            int quantityPurchased = entry.getValue(); // Get quantity purchased
-
-            // Step 1: Decrease physical copies by quantity purchased
-            bookDAO.reducePhysicalCopies(bookId, quantityPurchased);
-
-            // Step 2: Increase sold copies by quantity purchased
+            int bookId = entry.getKey().getBookId();
+            int quantityPurchased = entry.getValue();
             bookDAO.updateSoldCopies(bookId, quantityPurchased);
-
-            // Log the final stock adjustment for each book
             System.out.println("Finalized stock adjustments for book ID " + bookId + ": " +
                     quantityPurchased + " copies sold.");
         }

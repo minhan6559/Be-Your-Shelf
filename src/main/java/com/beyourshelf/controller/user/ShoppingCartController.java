@@ -219,10 +219,15 @@ public class ShoppingCartController {
         // Confirm checkout with the user
         boolean confirmed = UIUtils.showConfirmation("Confirm Checkout", "Are you sure you want to checkout?");
         if (confirmed) {
-            reserveStockInMemory(selectedItems); // Reserve stock for selected items
-            loadPaymentScreen(selectedItems.stream().mapToDouble(CartTableItem::getTotalAmount).sum()); // Load payment
-                                                                                                        // screen with
-                                                                                                        // total amount
+            reserveStockInMemory(selectedItems);
+            // Attempt to reserve stock in the database atomically
+            boolean reserved = inventoryService.reserveBooks(reservedStock);
+            if (!reserved) {
+                UIUtils.showError("Checkout Error", "Some items just went out of stock. Please review your cart.");
+                reservedStock.clear();
+                return;
+            }
+            loadPaymentScreen(selectedItems.stream().mapToDouble(CartTableItem::getTotalAmount).sum());
         }
     }
 
@@ -301,7 +306,14 @@ public class ShoppingCartController {
      * cancellation.
      */
     public void revertReservedStock() {
-        reservedStock.clear(); // Clear the reserved stock in memory
+        // Revert any DB reservations if payment fails/cancels
+        if (!reservedStock.isEmpty()) {
+            java.util.List<com.beyourshelf.model.entity.CartItem> items = reservedStock.entrySet().stream()
+                    .map(e -> new com.beyourshelf.model.entity.CartItem(e.getKey().getBookId(), e.getValue()))
+                    .toList();
+            inventoryService.revertReservations(items);
+            reservedStock.clear();
+        }
     }
 
     /**
