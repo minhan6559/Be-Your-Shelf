@@ -49,7 +49,6 @@ public class PaymentController {
 
     // Service dependencies for handling orders, cart operations, and payments
     private final IOrderService orderService = ServiceManager.getInstance().getOrderService();
-    private final ICartService cartService = ServiceManager.getInstance().getCartService();
     private final IPaymentService paymentService = ServiceManager.getInstance().getPaymentService();
 
     private ShoppingCartController shoppingCartController; // Controller responsible for managing the shopping cart UI

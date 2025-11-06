@@ -17,7 +17,7 @@ import com.beyourshelf.model.entity.Book;
 import com.beyourshelf.model.entity.CartTableItem;
 import com.beyourshelf.model.entity.ShoppingCart;
 import com.beyourshelf.service.ServiceManager;
-import com.beyourshelf.service.cart.CartService;
+import com.beyourshelf.service.cart.ICartService;
 import com.beyourshelf.service.inventory.IInventoryService;
 import com.beyourshelf.utils.auth.SessionManager;
 import com.beyourshelf.utils.ui.UIUtils;
@@ -52,7 +52,8 @@ public class ShoppingCartController {
 
     private ShoppingCart shoppingCart; // Holds the shopping cart data
 
-    private final CartService cartService = CartService.getInstance(); // Cart service for managing cart operations
+    private final ICartService cartService = ServiceManager.getInstance().getCartService(); // Cart service for managing
+                                                                                            // cart operations
     private final IInventoryService inventoryService = ServiceManager.getInstance().getInventoryService(); // Inventory
                                                                                                            // service
 

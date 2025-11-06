@@ -14,7 +14,7 @@ import com.beyourshelf.model.entity.CartItem;
 import com.beyourshelf.model.entity.ShoppingCart;
 import com.beyourshelf.service.ServiceManager;
 import com.beyourshelf.service.book.IBookService;
-import com.beyourshelf.service.cart.CartService;
+import com.beyourshelf.service.cart.ICartService;
 import com.beyourshelf.utils.ui.UIUtils;
 
 /**
@@ -31,7 +31,8 @@ public abstract class BookTableController {
 
     // Services for handling books and cart-related operations
     protected IBookService bookService = ServiceManager.getInstance().getBookService();
-    protected CartService cartService = CartService.getInstance(); // Retrieve cartService once
+    protected ICartService cartService = ServiceManager.getInstance().getCartService(); // Retrieve cartService through
+                                                                                        // ServiceManager
 
     // UI elements for displaying books in a table
     protected TableView<Book> booksTableView;

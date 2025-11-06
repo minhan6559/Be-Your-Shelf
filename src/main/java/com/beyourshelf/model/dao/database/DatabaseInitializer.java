@@ -220,15 +220,15 @@ public class DatabaseInitializer extends BaseDAO {
     public static void resetBooksStock() {
         String resetBooksSQL = """
                     UPDATE books SET physical_copies = CASE
-                        WHEN title = 'Absolute Java' THEN 10
-                        WHEN title = 'JAVA: How to Program' THEN 100
-                        WHEN title = 'Computing Concepts with JAVA 8 Essentials' THEN 500
-                        WHEN title = 'Java Software Solutions' THEN 500
-                        WHEN title = 'Java Program Design' THEN 2
-                        WHEN title = 'Clean Code' THEN 100
-                        WHEN title = 'Gray Hat C#' THEN 300
-                        WHEN title = 'Python Basics' THEN 1000
-                        WHEN title = 'Bayesian Statistics The Fun Way' THEN 600
+                        WHEN title = 'To Kill a Mockingbird' THEN 120
+                        WHEN title = '1984' THEN 150
+                        WHEN title = 'The Great Gatsby' THEN 100
+                        WHEN title = 'Pride and Prejudice' THEN 200
+                        WHEN title = 'The Catcher in the Rye' THEN 180
+                        WHEN title = 'The Hobbit' THEN 250
+                        WHEN title = 'Sapiens: A Brief History of Humankind' THEN 300
+                        WHEN title = 'Atomic Habits' THEN 500
+                        WHEN title = 'The Alchemist' THEN 400
                         ELSE physical_copies
                     END;
                 """;

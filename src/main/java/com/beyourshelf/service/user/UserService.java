@@ -21,7 +21,7 @@ public class UserService implements IUserService {
     private final UserDAO userDAO;
 
     // Private constructor to prevent direct instantiation (Singleton pattern)
-    public UserService() {
+    private UserService() {
         this.userDAO = new UserDAO();
     }
 

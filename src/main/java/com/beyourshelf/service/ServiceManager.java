@@ -37,7 +37,7 @@ public class ServiceManager {
         IBookDAO bookDAO = new BookDAO();
 
         // Initialize service instances
-        this.userService = new UserService(); // Initialize user service
+        this.userService = UserService.getInstance(); // Use singleton instance for UserService
         this.orderService = OrderService.getInstance(); // Use singleton instance for OrderService
         this.inventoryService = new InventoryService(bookDAO); // Initialize inventory service, requires IBookDAO
         this.paymentService = PaymentService.getInstance(); // Use singleton instance for PaymentService

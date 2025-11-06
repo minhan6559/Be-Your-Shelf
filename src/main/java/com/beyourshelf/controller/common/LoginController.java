@@ -13,8 +13,8 @@ import com.beyourshelf.model.entity.Book;
 import com.beyourshelf.model.entity.ShoppingCart;
 import com.beyourshelf.model.entity.User;
 import com.beyourshelf.service.ServiceManager;
-import com.beyourshelf.service.book.BookService;
-import com.beyourshelf.service.cart.CartService;
+import com.beyourshelf.service.book.IBookService;
+import com.beyourshelf.service.cart.ICartService;
 import com.beyourshelf.service.user.IUserService;
 import com.beyourshelf.utils.auth.SessionManager;
 import com.beyourshelf.utils.ui.UIUtils;
@@ -179,11 +179,15 @@ public class LoginController {
      * @return A ShoppingCart object populated with the user's items.
      */
     private ShoppingCart createShoppingCart(User user) {
-        int cartId = CartService.getInstance().getOrCreateCart(user.getId()); // Get or create cart for the user
+        ICartService cartService = ServiceManager.getInstance().getCartService(); // Get cart service through
+                                                                                  // ServiceManager
+        IBookService bookService = ServiceManager.getInstance().getBookService(); // Get book service through
+                                                                                  // ServiceManager
+        int cartId = cartService.getOrCreateCart(user.getId()); // Get or create cart for the user
         ShoppingCart shoppingCart = new ShoppingCart(user.getId(), cartId); // Pass both user ID and cart ID
         // Populate the shopping cart with items
-        CartService.getInstance().getCartItems(cartId).forEach(item -> {
-            Book book = BookService.getInstance().findBookById(item.getBookId());
+        cartService.getCartItems(cartId).forEach(item -> {
+            Book book = bookService.findBookById(item.getBookId());
             shoppingCart.addBook(book, item.getQuantity());
         });
         return shoppingCart;
