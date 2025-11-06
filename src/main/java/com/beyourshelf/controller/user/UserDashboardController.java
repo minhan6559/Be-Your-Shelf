@@ -104,7 +104,7 @@ public class UserDashboardController extends BookTableController {
         // Ensure that the welcome label and user details are not null
         if (welcomeLabel != null && firstName != null && lastName != null) {
             // Set the welcome message in the label
-            welcomeLabel.setText("Welcome, " + firstName + " " + lastName + " to The Reading Room!");
+            welcomeLabel.setText("Welcome, " + firstName + " " + lastName + " to Be Your Shelf!");
         } else {
             // Log an error if the welcome label or user information is null
             System.err.println("Error: welcomeLabel or user information is null.");
