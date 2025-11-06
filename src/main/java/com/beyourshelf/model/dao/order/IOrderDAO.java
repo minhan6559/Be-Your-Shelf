@@ -58,4 +58,20 @@ public interface IOrderDAO {
      * @return A list of all Order objects.
      */
     List<Order> getAllOrders();
+
+    /**
+     * Fetches orders for admin with detailed information.
+     *
+     * @param orderIds The list of order IDs to retrieve.
+     * @return A list of Order objects with admin-level details.
+     */
+    List<Order> fetchOrdersForAdmin(List<Integer> orderIds);
+
+    /**
+     * Deletes an order by its ID from the database.
+     *
+     * @param orderId The ID of the order to delete.
+     * @return true if the deletion was successful, false otherwise.
+     */
+    boolean deleteOrderById(int orderId);
 }

@@ -2,6 +2,7 @@ package com.beyourshelf.service.order;
 
 import java.util.List;
 
+import com.beyourshelf.model.dao.order.IOrderDAO;
 import com.beyourshelf.model.dao.order.OrderDAO;
 import com.beyourshelf.model.entity.Order;
 import com.beyourshelf.utils.export.CSVExportUtility;
@@ -16,7 +17,7 @@ public class OrderService implements IOrderService {
 
     // Singleton instance of OrderService
     private static OrderService instance;
-    private final OrderDAO orderDAO; // DAO to interact with the database
+    private final IOrderDAO orderDAO; // DAO to interact with the database
 
     // Private constructor to prevent direct instantiation
     private OrderService() {

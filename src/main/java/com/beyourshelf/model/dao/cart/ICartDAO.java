@@ -2,6 +2,7 @@ package com.beyourshelf.model.dao.cart;
 
 import java.util.List;
 
+import com.beyourshelf.model.entity.Book;
 import com.beyourshelf.model.entity.CartItem;
 
 /**
@@ -55,4 +56,12 @@ public interface ICartDAO {
      * @param bookId the book ID to remove
      */
     void removeBookFromCart(int cartId, int bookId);
+
+    /**
+     * Removes multiple books from the cart.
+     *
+     * @param cartId        the cart ID
+     * @param booksToRemove the list of books to remove from the cart
+     */
+    void removeBooksFromCart(int cartId, List<Book> booksToRemove);
 }

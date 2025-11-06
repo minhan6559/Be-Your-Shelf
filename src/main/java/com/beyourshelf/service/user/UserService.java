@@ -3,6 +3,7 @@ package com.beyourshelf.service.user;
 import java.util.List;
 import java.util.Optional;
 
+import com.beyourshelf.model.dao.user.IUserDAO;
 import com.beyourshelf.model.dao.user.UserDAO;
 import com.beyourshelf.model.entity.User;
 import com.beyourshelf.utils.auth.PasswordUtils;
@@ -18,7 +19,7 @@ public class UserService implements IUserService {
     private static UserService instance;
 
     // DAO to interact with the user database
-    private final UserDAO userDAO;
+    private final IUserDAO userDAO;
 
     // Private constructor to prevent direct instantiation (Singleton pattern)
     private UserService() {

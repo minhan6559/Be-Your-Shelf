@@ -3,6 +3,7 @@ package com.beyourshelf.service.book;
 import java.util.List;
 
 import com.beyourshelf.model.dao.book.BookDAO;
+import com.beyourshelf.model.dao.book.IBookDAO;
 import com.beyourshelf.model.entity.Book;
 
 /**
@@ -16,7 +17,7 @@ public class BookService implements IBookService {
 
     // Singleton instance of BookService
     private static BookService instance;
-    private final BookDAO bookDAO; // DAO for accessing book-related data
+    private final IBookDAO bookDAO; // DAO for accessing book-related data
 
     /**
      * Private constructor for Singleton pattern.

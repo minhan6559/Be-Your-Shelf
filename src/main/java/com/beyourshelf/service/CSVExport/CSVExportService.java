@@ -3,6 +3,7 @@ package com.beyourshelf.service.CSVExport;
 import java.util.List;
 import java.util.Optional;
 
+import com.beyourshelf.model.dao.order.IOrderDAO;
 import com.beyourshelf.model.dao.order.OrderDAO;
 import com.beyourshelf.model.entity.Order;
 import com.beyourshelf.utils.export.CSVExportUtility;
@@ -16,7 +17,7 @@ public class CSVExportService implements ICSVExportService {
 
     // Singleton instance
     private static CSVExportService instance;
-    private final OrderDAO orderDAO;
+    private final IOrderDAO orderDAO;
 
     // Private constructor for Singleton pattern
     private CSVExportService() {

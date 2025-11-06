@@ -151,6 +151,7 @@ public class CartDAO extends BaseDAO implements ICartDAO {
      * @param cartId        The ID of the cart.
      * @param booksToRemove The list of books to remove from the cart.
      */
+    @Override
     public void removeBooksFromCart(int cartId, List<Book> booksToRemove) {
         String sql = "DELETE FROM cart_items WHERE cart_id = ? AND book_id = ?";
         try (Connection conn = Database.getInstance().getConnection();

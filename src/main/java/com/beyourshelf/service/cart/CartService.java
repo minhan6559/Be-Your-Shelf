@@ -3,6 +3,7 @@ package com.beyourshelf.service.cart;
 import java.util.List;
 
 import com.beyourshelf.model.dao.cart.CartDAO;
+import com.beyourshelf.model.dao.cart.ICartDAO;
 import com.beyourshelf.model.entity.Book;
 import com.beyourshelf.model.entity.CartItem;
 
@@ -15,7 +16,7 @@ public class CartService implements ICartService {
 
     // Singleton instance
     private static CartService instance;
-    private final CartDAO cartDAO;
+    private final ICartDAO cartDAO;
 
     // Private constructor for Singleton
     private CartService() {
